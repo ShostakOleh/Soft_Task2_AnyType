@@ -4,7 +4,7 @@
 #include <exception>
 #include <iostream>
 
-
+/*Custom exception for incorrect call of method To{Type}()*/
 struct InvalidCast : public std::exception
 {
 	const char* what() const throw ()
@@ -27,7 +27,18 @@ class AnyType
 		float float_value;
 	}data;
 
-	enum DataType { bool_type, int_type, long_type, double_type, long_double_type, char_type, unsigned_int_type, float_type}data_type;
+	enum class DataType
+	{
+		bool_type,
+		int_type,
+		long_type,
+		double_type,
+		long_double_type,
+		char_type,
+		unsigned_int_type,
+		float_type,
+		none
+	}data_type;
 
 
 public:
@@ -40,6 +51,9 @@ public:
 	AnyType(unsigned int data_);
 	AnyType(float data_);
 
+	AnyType(const AnyType& data_);
+	AnyType(AnyType&& data_) noexcept;
+
 	AnyType operator= (bool data_);
 	AnyType operator= (int data_);
 	AnyType operator= (long data_);
@@ -50,16 +64,27 @@ public:
 	AnyType operator= (float data_);
 	AnyType operator= (AnyType data_);
 
+	/*Swaps value and type between two AnyType objects*/
 	void Swap(AnyType& data_);
 	std::string GetType();
+	/*Sets unions value to NULL and type to none*/
+	void Destroy();
 
+	/*Type-safe access to boolean value*/
 	bool ToBool();
+	/*Type-safe access to integer value*/
 	int ToInt();
+	/*Type-safe access to long value*/
 	long ToLong();
+	/*Type-safe access to double value*/
 	double ToDouble();
+	/*Type-safe access to long double value*/
 	long double ToLongDouble();
+	/*Type-safe access to char value*/
 	char ToChar();
+	/*Type-safe access to unsigned integer value*/
 	unsigned int ToUnsignedInt();
+	/*Type-safe access to float value*/
 	float ToFloat();
 };
 

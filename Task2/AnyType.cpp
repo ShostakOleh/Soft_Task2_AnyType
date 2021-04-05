@@ -3,104 +3,117 @@
 AnyType::AnyType(bool data_)
 {
 	data.bool_value = data_;
-	data_type = bool_type;
+	data_type = DataType::bool_type;
 }
 
 AnyType::AnyType(int data_)
 {
 	data.int_value = data_;
-	data_type = int_type;
+	data_type = DataType::int_type;
 }
 
 AnyType::AnyType(long data_)
 {
 	data.long_value = data_;
-	data_type = long_type;
+	data_type = DataType::long_type;
 }
 
 AnyType::AnyType(double data_)
 {
 	data.double_value = data_;
-	data_type = double_type;
+	data_type = DataType::double_type;
 }
 
 AnyType::AnyType(long double data_)
 {
 	data.long_double_value = data_;
-	data_type = long_double_type;
+	data_type = DataType::long_double_type;
 }
 
 AnyType::AnyType(char data_)
 {
 	data.char_value = data_;
-	data_type = char_type;
+	data_type = DataType::char_type;
 }
 
 AnyType::AnyType(unsigned int data_)
 {
 	data.unsigned_int_value = data_;
-	data_type = unsigned_int_type;
+	data_type = DataType::unsigned_int_type;
 }
 
 AnyType::AnyType(float data_)
 {
 	data.float_value = data_;
-	data_type = float_type;
+	data_type = DataType::float_type;
+}
+
+AnyType::AnyType(const AnyType& data_)
+{
+	this->data = data_.data;
+	this->data_type = data_.data_type;
+}
+
+AnyType::AnyType(AnyType&& data_) noexcept
+{
+	this->data = std::move(data_.data);
+	this->data_type = data_.data_type;
+	data_.Destroy();
 }
 
 AnyType AnyType::operator= (bool data_)
 {
 	data.bool_value = data_;
-	data_type = bool_type;
+	data_type = DataType::bool_type;
 	return this;
 }
 
 AnyType AnyType::operator= (int data_)
 {
 	data.int_value = data_;
-	data_type = int_type;
+	data_type = DataType::int_type;
 	return this;
 }
 
 AnyType AnyType::operator= (long data_)
 {
 	data.long_value = data_;
-	data_type = long_type;
+	data_type = DataType::long_type;
 	return this;
 }
 
 AnyType AnyType::operator= (double data_)
 {
 	data.double_value = data_;
-	data_type = double_type;
+	data_type = DataType::double_type;
 	return this;
 }
 
 AnyType AnyType::operator= (long double data_)
 {
 	data.long_double_value = data_;
-	data_type = long_double_type;
+	data_type = DataType::long_double_type;
 	return this;
 }
 
 AnyType AnyType::operator= (char data_)
 {
 	data.char_value = data_;
-	data_type = char_type;
+	data_type = DataType::char_type;
 	return this;
 }
 
 AnyType AnyType::operator= (unsigned int data_)
 {
 	data.unsigned_int_value = data_;
-	data_type = unsigned_int_type;
+	data_type = DataType::unsigned_int_type;
 	return this;
 }
 
 AnyType AnyType::operator= (float data_)
 {
 	data.float_value = data_;
-	data_type = float_type;
+	data_type = DataType::float_type;
 	return this;
 }
 
@@ -124,29 +137,36 @@ std::string AnyType::GetType()
 {
 	switch (this->data_type)
 	{
-	case bool_type: return "bool";
+	case DataType::bool_type: return "bool";
 		break;
-	case int_type: return "int";
+	case DataType::int_type: return "int";
 		break;
-	case long_type: return "long";
+	case DataType::long_type: return "long";
 		break;
-	case double_type: return "double";
+	case DataType::double_type: return "double";
 		break;
-	case long_double_type: return "long double";
+	case DataType::long_double_type: return "long double";
 		break;
-	case char_type: return "char";
+	case DataType::char_type: return "char";
 		break;
-	case unsigned_int_type: return "unsighed int";
+	case DataType::unsigned_int_type: return "unsighed int";
 		break;
-	case float_type: return "float";
+	case DataType::float_type: return "float";
 		break;
 	default: return "none";
+		break;
 	}
+}
+
+void AnyType::Destroy()
+{
+	data.int_value = NULL;
+	data_type = DataType::none;
 }
 
 bool AnyType::ToBool()
 {
-	if (data_type != bool_type)
+	if (data_type != DataType::bool_type)
 	{
 		throw InvalidCast();
 	}
@@ -155,7 +175,7 @@ bool AnyType::ToBool()
 
 int AnyType::ToInt()
 {
-	if (data_type != int_type)
+	if (data_type != DataType::int_type)
 	{
 		throw InvalidCast();
 	}
@@ -164,7 +184,7 @@ int AnyType::ToInt()
 
 long int AnyType::ToLong()
 {
-	if (data_type != long_type)
+	if (data_type != DataType::long_type)
 	{
 		throw InvalidCast();
 	}
@@ -173,7 +193,7 @@ long int AnyType::ToLong()
 
 double AnyType::ToDouble()
 {
-	if (data_type != double_type)
+	if (data_type != DataType::double_type)
 	{
 		throw InvalidCast();
 	}
@@ -182,7 +202,7 @@ double AnyType::ToDouble()
 
 long double AnyType::ToLongDouble()
 {
-	if (data_type != long_double_type)
+	if (data_type != DataType::long_double_type)
 	{
 		throw InvalidCast();
 	}
@@ -191,7 +211,7 @@ long double AnyType::ToLongDouble()
 
 char AnyType::ToChar()
 {
-	if (data_type != char_type)
+	if (data_type != DataType::char_type)
 	{
 		throw InvalidCast();
 	}
@@ -200,7 +220,7 @@ char AnyType::ToChar()
 
 unsigned int AnyType::ToUnsignedInt()
 {
-	if (data_type != unsigned_int_type)
+	if (data_type != DataType::unsigned_int_type)
 	{
 		throw InvalidCast();
 	}
@@ -209,7 +229,7 @@ unsigned int AnyType::ToUnsignedInt()
 
 float AnyType::ToFloat()
 {
-	if (data_type != float_type)
+	if (data_type != DataType::float_type)
 	{
 		throw InvalidCast();
 	}
